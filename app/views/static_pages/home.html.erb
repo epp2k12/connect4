@@ -220,7 +220,7 @@ function reset_game() {
                 num_connect++;
                 if(num_connect == 4) {
                     alert("somebody stop me! Winner is player " + thePlayer);
-                    
+                    $('#dPlayer').html('WINNER PLAYER ' + thePlayer).css({'background-color':'yellow','color':'black'});
                     return true;
                 }
             }else{
