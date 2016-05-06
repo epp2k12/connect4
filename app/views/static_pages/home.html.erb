@@ -115,7 +115,8 @@
 	$(document).ready(function() {
        //alert($('#b1').attr('id'));
 	   //alert("inside the bogus 1");
-
+       //var a=['a','b','c'];
+       //alert(a);
        //initialize 
        $('#dPlayer').html('PLAYER 1').css('background-color','red');
 
@@ -151,7 +152,6 @@
         }
 
     });
-
 
     $('#play_again').click(function() {
         var init_vars = reset_game();
@@ -194,11 +194,14 @@ function reset_game() {
         //check row win
         var num_connect = 0;
         var start_count = false;
+        var the_connect = [];
         for(i=0;i<7;i++) {
             if($('#b' + (f_row_num + i)).hasClass('box' + thePlayer) ) {
                 start_count = true;
                 num_connect++;
+                the_connect.push($('#b' + (f_row_num + i)).attr('id'));
                 if(num_connect == 4) {
+                    //alert('row ' + the_connect);
                     alert("somebody stop me! Winner is player " + thePlayer);
                     $('#dPlayer').html('WINNER PLAYER ' + thePlayer).css({'background-color':'yellow','color':'black'});
                     return true;
@@ -215,11 +218,15 @@ function reset_game() {
         num_connect = 0;
         start_count = false;
         var col_inc = 0;
+        var the_connect = [];
         for(i=0;i<6;i++) {
             if($('#b' + (f_col_num + col_inc)).hasClass('box' + thePlayer) ) {
                 start_count = true;
                 num_connect++;
+                
+                the_connect.push($('#b' + (f_col_num + col_inc)).attr('id'));
                 if(num_connect == 4) {
+                    //alert('col ' + the_connect);
                     alert("somebody stop me! Winner is player " + thePlayer);
                     $('#dPlayer').html('WINNER PLAYER ' + thePlayer).css({'background-color':'yellow','color':'black'});
                     return true;
@@ -235,7 +242,9 @@ function reset_game() {
 
         //check right diagonal win
         incr = 8;
+        col_direction = 1;
         var temp_box = get_first_right_diagonal_num(row_pos,col_pos,theBox,incr);
+        //alert('the starting box : ' +temp_box);
         var result = loop_diagonal(temp_box,thePlayer,incr);
         if(result) {
             $('#dPlayer').html('WINNER PLAYER ' + thePlayer).css({'background-color':'yellow','color':'black'});
@@ -244,7 +253,9 @@ function reset_game() {
 
         //check left diagonal win
         incr = 6;
+        col_direction = -1;
         var temp_box = get_first_left_diagonal_num(row_pos,col_pos,theBox,incr);
+        //alert('the starting box : ' +temp_box);
         var result = loop_diagonal(temp_box,thePlayer,incr);
         if(result) {
             $('#dPlayer').html('WINNER PLAYER ' + thePlayer).css({'background-color':'yellow','color':'black'});
@@ -286,17 +297,23 @@ function reset_game() {
        
         num_connect = 0;
         start_count = false;
+        var the_connect = [];
         //get col position of temp_box
         dCol = $('#b'+temp_box).attr('dcol');
         dRow = $('#b'+temp_box).attr('drow');
 
         for(i=1;i<7;i++) {
-            dCol++;
+
+            // temporary resolve for direction issue
+
             dRow++;
+            //alert('the incr ' + incr + ' col ' + dCol + " == " + 'row ' + dRow);
             if($('#b'+temp_box).hasClass('box' + thePlayer)) {
                 start_count = true;
                 num_connect++;
+                the_connect.push($('#b'+temp_box).attr('id') + "==" +dCol);
                 if(num_connect == 4) {
+                    //alert('diagonal ' +the_connect);
                     alert("somebody stop me! Winner is player " + thePlayer);
                     return true;
                 }
@@ -306,7 +323,16 @@ function reset_game() {
                     break;
                 }
             }
-            temp_box+=incr;
+            if(incr==6) {
+                    dCol--;
+                }else{
+                    dCol++;
+                }
+            if(dCol<1 || dCol>7 || dRow < 1 || dRow > 6) {
+                break;
+            }else{
+                temp_box+=incr;
+            }
         }
     }
 
