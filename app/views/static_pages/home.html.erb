@@ -171,6 +171,7 @@ function reset_game() {
     for(i=1;i<=42;i++) {
         $('#b' + i).removeClass('box1 box2 isMarked').css('background-color','#ffffff');
     }
+    $('td').css('border','1px solid #66ff66');
     var init_vars = [1,false];
     return init_vars;
 }
@@ -202,6 +203,7 @@ function reset_game() {
                 the_connect.push($('#b' + (f_row_num + i)).attr('id'));
                 if(num_connect == 4) {
                     //alert('row ' + the_connect);
+                    show_win_4(the_connect);
                     alert("somebody stop me! Winner is player " + thePlayer);
                     $('#dPlayer').html('WINNER PLAYER ' + thePlayer).css({'background-color':'yellow','color':'black'});
                     return true;
@@ -226,6 +228,7 @@ function reset_game() {
                 
                 the_connect.push($('#b' + (f_col_num + col_inc)).attr('id'));
                 if(num_connect == 4) {
+                    show_win_4(the_connect);
                     //alert('col ' + the_connect);
                     alert("somebody stop me! Winner is player " + thePlayer);
                     $('#dPlayer').html('WINNER PLAYER ' + thePlayer).css({'background-color':'yellow','color':'black'});
@@ -260,6 +263,14 @@ function reset_game() {
         if(result) {
             $('#dPlayer').html('WINNER PLAYER ' + thePlayer).css({'background-color':'yellow','color':'black'});
             return true;
+        }
+
+    }
+
+    function show_win_4(dArray) {
+        //alert(dArray);
+        for(i=0;i<dArray.length;i++) {
+            $("#"+dArray[i]).css('border','2px solid yellow');
         }
 
     }
@@ -311,8 +322,9 @@ function reset_game() {
             if($('#b'+temp_box).hasClass('box' + thePlayer)) {
                 start_count = true;
                 num_connect++;
-                the_connect.push($('#b'+temp_box).attr('id') + "==" +dCol);
+                the_connect.push($('#b'+temp_box).attr('id'));
                 if(num_connect == 4) {
+                    show_win_4(the_connect);
                     //alert('diagonal ' +the_connect);
                     alert("somebody stop me! Winner is player " + thePlayer);
                     return true;
