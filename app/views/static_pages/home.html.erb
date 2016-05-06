@@ -125,10 +125,10 @@
 
             if(thePlayer == 1) {
                 $(this).css('background-color', 'red').addClass( "box" + thePlayer + " isMarked" );
-                $('#dPlayer').html('YOUR TURN PLAYER 2').css('background-color','black');
+                $('#dPlayer').html('YOUR TURN PLAYER 2').css({'background-color':'black','color':'#ffffff'});
             }else{
-                $(this).css('background-color', 'black').addClass( "box" + thePlayer + " isMarked" );
-                $('#dPlayer').html('YOUR TURN PLAYER 1').css('background-color','red');
+                $(this).css('background-color','black').addClass( "box" + thePlayer + " isMarked" );
+                $('#dPlayer').html('YOUR TURN PLAYER 1').css({'background-color':'red','color':'#ffffff'});
             }
 
            //get the current box number
