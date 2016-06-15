@@ -112,6 +112,8 @@
     var game_win = false;
     var mode = 2;
 
+    var diagonal_loop_count = (maxRow >= maxCol)? maxRow : maxCol;
+
 	$(document).ready(function() {
        //alert($('#b1').attr('id'));
 	   //alert("inside the bogus 1");
@@ -201,7 +203,7 @@ function reset_game() {
                 start_count = true;
                 num_connect++;
                 the_connect.push($('#b' + (f_row_num + i)).attr('id'));
-                if(num_connect == 4) {
+                if(num_connect == con) {
                     //alert('row ' + the_connect);
                     show_win_4(the_connect);
                     alert("somebody stop me! Winner is player " + thePlayer);
@@ -227,7 +229,7 @@ function reset_game() {
                 num_connect++;
                 
                 the_connect.push($('#b' + (f_col_num + col_inc)).attr('id'));
-                if(num_connect == 4) {
+                if(num_connect == con) {
                     show_win_4(the_connect);
                     //alert('col ' + the_connect);
                     alert("somebody stop me! Winner is player " + thePlayer);
@@ -246,9 +248,9 @@ function reset_game() {
         //check right diagonal win
         incr = 8;
         col_direction = 1;
-        var temp_box = get_first_right_diagonal_num(row_pos,col_pos,theBox,incr);
+        var temp_box = get_first_right_diagonal_num(row_pos,col_pos,theBox,incr,diagonal_loop_count );
         //alert('the starting box : ' +temp_box);
-        var result = loop_diagonal(temp_box,thePlayer,incr);
+        var result = loop_diagonal(temp_box,thePlayer,incr,con,diagonal_loop_count );
         if(result) {
             $('#dPlayer').html('WINNER PLAYER ' + thePlayer).css({'background-color':'yellow','color':'black'});
             return true;
@@ -257,9 +259,9 @@ function reset_game() {
         //check left diagonal win
         incr = 6;
         col_direction = -1;
-        var temp_box = get_first_left_diagonal_num(row_pos,col_pos,theBox,incr);
+        var temp_box = get_first_left_diagonal_num(row_pos,col_pos,theBox,incr,diagonal_loop_count );
         //alert('the starting box : ' +temp_box);
-        var result = loop_diagonal(temp_box,thePlayer,incr);
+        var result = loop_diagonal(temp_box,thePlayer,incr,con,diagonal_loop_count );
         if(result) {
             $('#dPlayer').html('WINNER PLAYER ' + thePlayer).css({'background-color':'yellow','color':'black'});
             return true;
@@ -275,9 +277,9 @@ function reset_game() {
 
     }
 
-    function get_first_left_diagonal_num(the_box_row,the_box_col,start_box,incr) {
+    function get_first_left_diagonal_num(the_box_row,the_box_col,start_box,incr,diag_loop_cnt) {
         //return("hello world!");
-        for(i=1;i<7;i++) {
+        for(i=1;i<diag_loop_cnt;i++) {
                 the_box_row--;
                 the_box_col++;
                 if(the_box_row < 1) {
@@ -290,8 +292,8 @@ function reset_game() {
         }
     }
 
-    function get_first_right_diagonal_num(the_box_row,the_box_col,start_box,incr) {
-        for(i=1;i<7;i++) {
+    function get_first_right_diagonal_num(the_box_row,the_box_col,start_box,incr,diag_loop_cnt) {
+        for(i=1;i<diag_loop_cnt;i++) {
             the_box_row--;
             the_box_col--;
             if(the_box_row < 1) {
@@ -304,7 +306,7 @@ function reset_game() {
         }
     }
 
-    function loop_diagonal(temp_box,thePlayer,incr) {
+    function loop_diagonal(temp_box,thePlayer,incr,con,diag_loop_cnt) {
        
         num_connect = 0;
         start_count = false;
@@ -313,7 +315,7 @@ function reset_game() {
         dCol = $('#b'+temp_box).attr('dcol');
         dRow = $('#b'+temp_box).attr('drow');
 
-        for(i=1;i<7;i++) {
+        for(i=1;i<diag_loop_cnt;i++) {
 
             // temporary resolve for direction issue
 
@@ -323,7 +325,7 @@ function reset_game() {
                 start_count = true;
                 num_connect++;
                 the_connect.push($('#b'+temp_box).attr('id'));
-                if(num_connect == 4) {
+                if(num_connect == con) {
                     show_win_4(the_connect);
                     //alert('diagonal ' +the_connect);
                     alert("somebody stop me! Winner is player " + thePlayer);
